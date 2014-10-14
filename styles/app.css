@@ -1,0 +1,88 @@
+.container {
+	height: 600px;
+	width: 100%;
+	margin: 30px auto;
+}
+
+.container .title, .highcharts-title, .line-chart-title{
+	font-family: sans-serif;
+	font-size: 20px !important;
+	width: 100% !important;
+}
+
+.stat-btns{
+	margin: 27px 10px 0 0;
+	float: right;
+}
+
+.main .north-container .activity-section .stat-btns button{
+	display: inline;
+}
+
+.main .north-container .activity-section .heading{
+	height: 50px;
+}
+
+.main .north-container .activity-section .heading .title{
+	float: left;
+}
+
+.line-chart-title{
+	float: left;
+	width: 50%;
+}
+.date-btns, .data-selection{
+	float: right;
+}
+
+.pie-label {
+	width: 100%;
+	padding: 3px 6px 3px 6px;
+}
+
+.activity-chart {
+	height: 50%;
+}
+
+.segment-table {
+	height: auto;
+	text-align: center;
+}
+
+.segment-table .title {
+	margin-bottom: 20px;
+}
+
+.device-chart {
+	height: 50%;
+}
+
+.device-chart .devices-section {
+	position: relative;
+	width: 100%;
+}
+
+.device-chart .pie-chart {
+	position: aboslute;
+	width: 100%;
+}
+
+#date-options {
+	text-align: right;
+}
+
+td a {
+	text-decoration: underline;
+}
+
+@media only screen and (max-width:767px) {
+	.container .title, .highcharts-title, .line-chart-title {
+		width: auto !important;
+	}
+
+	.bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
+		width: auto !important;
+		margin: 0 20px 0 0 !important;
+
+	}
+}
