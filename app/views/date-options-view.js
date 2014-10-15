@@ -7,23 +7,26 @@ $(function(){
 		template : Handlebars.compile( $( "#date-options-view-tpl" ).html() ),
 
 		events: {
-			'click .date-btns button, .dropdown-menu li' : 'updateData'
+			'click .date-btns .btn, .dropdown-menu li' : 'updateData'
 		},
 
 		initialize: function() {
 			var me = this;
 			me.render();
+			$('.selectpicker').selectpicker();
 		},
 
 		render: function() {
 			var me = this;
 			me.$el.html( me.template() );
 			me.delegateEvents(me.events);
-			
+
 			return me;
 		},
 
 		updateData: function(e){
+			e.preventDefault();
+
 			var days = $(e.target).attr('value') || $('.dropdown-menu li.selected .text').text().split(' ')[0];
 			if(days.toLowerCase() === 'today') {
 				app.config.timeline = app.config.today;

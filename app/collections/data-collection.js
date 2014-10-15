@@ -14,7 +14,8 @@ $(function(){
 	    		var lines = data.split('\n'),
 	    			header_categories = lines[0].split(','),
 	    			result = [],
-	    			lines_len = lines.length;
+	    			lines_len = lines.length,
+	    			totaActivity = 0;
 
 	    		for( var i = 1 ; i < lines_len ; i ++ ) {
 	    			var item = lines[i].split(',');
@@ -27,9 +28,11 @@ $(function(){
 		    				tmp_data[header_categories[d]] = item[d];
 		    			}
 		    			result.push(tmp_data);
+		    			if( _.last( item ) == 1 ) totaActivity++;
 	    			}
 	    		}
 
+	    		app.config.totalActivityRecorded = totaActivity;
 	    		me.models = result;
 	    		me.trigger('change');
 	    	});

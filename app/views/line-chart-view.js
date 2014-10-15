@@ -7,16 +7,38 @@ $(function(){
 		initialize: function() {
 			var me = this;
 
-			me.listenTo(app.dataCollection, "change", function(){
+			me.listenToOnce(app.dataCollection, "change", function(){
 				me.render();
-				$('.selectpicker').selectpicker();
+				app.dateOptionsView = new app.DateOptionsView();
+				app.statsButtonsView = new app.StatsButtonsView();
+
+				me.$percentageOfActivityRecorded = (app.config.totalActivityRecorded / app.dataCollection.models.length ) * 100;
 			});
 			me.listenTo(app.EventBus, "update_data", me.render );
-			me.listenTo(app.EventBus, "window_resize", function(){
-				if(me.$chart) {
-				    me.$chart.setSize( $('.activity-chart').width(), $('.activity-chart').height());
-				}
-			});
+			me.listenTo(app.EventBus, "onMeanButtonClick", me.drawMeanLine );
+			me.listenTo(app.EventBus, "onTrendButtonClick", me.drawTrendLine );
+			me.listenTo(app.EventBus, "window_resize", me.resizeChart );
+		},
+
+		resizeChart: function(){
+			var me = this;
+			if(me.$chart) {
+			    me.$chart.setSize( $('.activity-chart').width(), $('.activity-chart').height());
+			}
+		},
+
+		drawMeanLine: function(){
+			var me = this;
+			me.$chart.series[2].setVisible( ! me.$chart.series[2].visible );
+
+			return me;
+		},
+
+		drawTrendLine: function(){
+			var me = this;
+			me.$chart.series[1].setVisible( ! me.$chart.series[1].visible );
+
+			return me;
 		},
 
 		render: function() {
@@ -26,7 +48,10 @@ $(function(){
 				total_activity = 0,
 				categories = [],
 				date_total_activity = {},
-				results = [];
+				reg_y = [], //linear regression y values
+				reg_x = [], //linear regression y values
+				results = [],
+				lr; // linear regression
 
 			var calculateDateActivity = function(data) {
 				var activity_value = parseInt( _.last(_.values(data)) );
@@ -50,12 +75,14 @@ $(function(){
 				}
 			}
 
+
 			// Set percentage data for each date
 			for(var d in date_total_activity) {
 				if(date_total_activity.hasOwnProperty(d)) {
+					var percentage = (date_total_activity[d]/app.config.totalActivityRecorded) * 100;
 					results.push({
 						name: d,
-						y: (date_total_activity[d]/total_activity) * 100
+						y: percentage
 					});
 				}
 			}
@@ -66,16 +93,32 @@ $(function(){
 
 			for(var i = 0 ; i < results.length ; i++) {
 				categories.push( moment( results[i].name ).format('MMMM D') );
+				reg_y.push( results[i].y );
 			}
 
+			// Calculate trend
+			reg_x = _.range( results.length );
+			lr = app.util.linearRegression(reg_y, reg_x);
+
+			var regression_data = [
+				[ reg_x[0], lr.slope * reg_x[0] + lr.intercept ],
+			    [ reg_x[reg_x.length-1], lr.slope * reg_x[reg_x.length-1] + lr.intercept ]
+			];
+
+			// Calculate mean
+			var mean = _.reduce( reg_y, function(m, n){return m + n}, 0 ) / reg_y.length;
+				
+			var mean_data =  [
+				[ 0, mean ],
+				[ _.last(reg_x), mean ]
+			];
 
 			// Initialize line chart and set data
 			if( me.$chart ) {
-				me.$chart.series[0].remove();
-				me.$chart.addSeries({
-					data: results,
-					color: 'blue'
-				});
+				me.$chart.series[0].setData(results, false);
+				me.$chart.redraw();
+				me.$chart.series[1].setData( regression_data ); 
+				me.$chart.series[2].setData( mean_data );
 			} else {
 				me.$chart = new Highcharts.Chart({
 			        chart: {
@@ -94,13 +137,12 @@ $(function(){
 			        	enabled: false
 			        },
 			        yAxis: {
+			        	max: me.$percentageOfActivityRecorded,
 			        	title: {
 			        		text: ''
 			        	},
 			        	labels: {
-			                formatter: function () {
-			                    return this.value + '%';
-			                }
+			                format: '{value:.1f}%'
 			            }
 			        },
 			        xAxis: {
@@ -111,13 +153,20 @@ $(function(){
 			                return '<b>'+ this.x +'</b><br/>'+ parseFloat(this.y).toFixed(1) + '%';
 			            }
 			        },
-			        plotOptions: {
-			           
-			        },
 			        series: [{
 			        	name: 'dates-data',
 			            data: results,
-			            color: 'blue'
+			            color: '#3447CD'
+			        },{
+			        	name: 'trend',
+			        	data: regression_data,
+			        	visible: false,
+			        	color: 'red'
+			        }, {
+			        	name: 'Mean',
+			        	visible: false,
+			        	color: 'green',
+			        	data: mean_data
 			        }]
 			    });
 				me.$chart.setSize( $('.activity-chart').width(), $('.activity-chart').height() );

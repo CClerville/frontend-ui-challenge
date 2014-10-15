@@ -8,7 +8,9 @@ $(function() {
 		timeline: '7/31/2014',  // default - today
 
 		//gender
-		segment: 'All' // default
+		segment: 'All', // default
+	
+		totalActivityRecorded: 0
 	};
 
 	// Global events
@@ -19,7 +21,6 @@ $(function() {
 	});
 
 	app.dataCollection = new app.DataCollection();
-	app.dateOptionsView = new app.DateOptionsView();
 	app.lineChartView = new app.LineChartView();
 	app.segmentView = new app.SegmentView(); 
 	app.pieChartView = new app.PieChartView();

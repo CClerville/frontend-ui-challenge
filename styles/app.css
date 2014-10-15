@@ -9,10 +9,21 @@
 	font-size: 20px !important;
 	width: 100% !important;
 }
+.btn {
+	padding: 0 20px 0 20px !important;
+	border: solid 2px #BEBEBE !important;
+}
+.date-btns .btn {
+	background-color: rgba(31, 30, 30, 0.21);
+}
 
 .stat-btns{
 	margin: 27px 10px 0 0;
 	float: right;
+}
+
+.stat-btns .btn {
+	background-color: #B4E2B5;
 }
 
 .main .north-container .activity-section .stat-btns button{

@@ -16,11 +16,14 @@ $(function(){
 
 			me.listenTo(app.dataCollection, "change", me.render );
 			me.listenTo(app.EventBus, "update_data", me.render );
-			me.listenTo(app.EventBus, "window_resize", function(){
-				if(me.$chart) {
-				    me.$chart.setSize( $('.device-chart').width(), $('.device-chart').height() );
-				}
-			});
+			me.listenTo(app.EventBus, "window_resize", me.resizeChart );
+		},
+
+		resizeChart: function(){
+			var me = this;
+			if(me.$chart) {
+			    me.$chart.setSize( $('.device-chart').width(), $('.device-chart').height() );
+			}
 		},
 
 		render: function() {

@@ -16,15 +16,12 @@
 		    		</div>
 		    		
 		    	</div>
-		    	<div style="clear:both"></div>
 		    	<div class="stat-btns">
-						<button>Mean Line</button>
-						<button>Trend Line</button>
-					</div>
+					<div id="stats-btns-section"></div>
+				</div>
 		    </div>
 		    <div class="row">
 		    	<div class="segment-table col-md-6 col-sm-6">
-		    		<div class="title">Segments</div>
 					<div id="segments"></div>	
 		    	</div>
 		    	<div class="device-chart col-md-6 col-sm-6 ">
@@ -49,6 +46,7 @@
 		<script type="text/javascript" src="app/models/data-model.js"></script>
 		<script type="text/javascript" src="app/collections/data-collection.js"></script>
 		<script type="text/javascript" src="app/views/date-options-view.js"></script>
+		<script type="text/javascript" src="app/views/stats-buttons-view.js"></script>
 		<script type="text/javascript" src="app/views/segment-view.js"></script>
 		<script type="text/javascript" src="app/views/line-chart-view.js"></script>
 		<script type="text/javascript" src="app/views/pie-chart-view.js"></script>
@@ -63,14 +61,20 @@
 				<option value="14">14 Days</option>
     		 </select>
     		<div class="date-btns hidden-xs">
-				<button value="today">Today</button>
-				<button value="3">3 Days</button>
-				<button value="7">7 Days</button>
-				<button value="14">14 Days</button>
+    			<a class="btn btn-default" href="#" role="button" value="today">Today</a>
+    			<a class="btn btn-default" href="#" role="button" value="3">3 Days</a>
+    			<a class="btn btn-default" href="#" role="button" value="7">7 Days</a>
+    			<a class="btn btn-default" href="#" role="button" value="14">14 Days</a>
 			</div>
 		</script>
 
+		<script type="text/x-handlebars-template" id="stats-buttons-view-tpl">
+			<a class="btn btn-default mean-line-btn" href="#" role="button">Mean Line</a>
+    		<a class="btn btn-default trend-line-btn" href="#" role="button">Trend Line</a>
+		</script>
+
 		<script type="text/x-handlebars-template" id="segments-view-tpl">
+			<div class="title">Segments</div>
 			<div>
 				<table class="table table-striped table-bordered">
 					<tr>
