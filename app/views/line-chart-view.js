@@ -137,8 +137,7 @@ $(function(){
 			        	enabled: false
 			        },
 			        yAxis: {
-			        	max: me.$percentageOfActivityRecorded,
-			        	title: {
+ 			        	title: {
 			        		text: ''
 			        	},
 			        	labels: {
