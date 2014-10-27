@@ -25,7 +25,7 @@ $(function(){
 				results = {};
 
 			for(var i = 0 ; i < len ; i++) {
-				if( moment(data[i].Date) <= moment(app.config.timeline) ) {
+				if( moment(data[i].Date) >= moment(app.config.timeline) ) {
 					if( ! results[ data[i].Gender ] ) {
 						results[ data[i].Gender ] = 1;
 					} else {

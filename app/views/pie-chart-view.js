@@ -47,7 +47,7 @@ $(function(){
 
 			// Filter data based on day(s) and segment
 			for(var i = 0 ; i < len ; i++) {
-				if( moment(data[i].Date) <= moment(app.config.timeline) ) {
+				if( moment(data[i].Date) >= moment(app.config.timeline) ) {
 					if( app.config.segment === 'All' ) {
 						calculateDevices( data[i].Device );
 					} else if( app.config.segment.toLowerCase() === data[i].Gender.toLowerCase() ) {
